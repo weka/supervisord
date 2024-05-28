@@ -1,5 +1,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/ochinchina/supervisord)](https://goreportcard.com/report/github.com/ochinchina/supervisord)
 
+# WEKA: This project was forked from upstream, to add stopretrysecs, so that
+# we will keep retrying to send the termination signal if the program does
+# not respond.
+
 # Why this project?
 
 The python script supervisord is a powerful tool used by a lot of guys to manage the processes. I like  supervisord too.
@@ -118,7 +122,7 @@ Following parameters configured in "supervisord" section:
 
 Supervised program settings configured in [program:programName] section and include these options:
 
-- **command**. Command to supervise. It can be given as full path to executable or can be calculated via PATH variable. Command line parameters also should be supplied in this string. 
+- **command**. Command to supervise. It can be given as full path to executable or can be calculated via PATH variable. Command line parameters also should be supplied in this string.
 - **process_name**. the process name
 - **numprocs**. number of process
 - **numprocs_start**. ??
@@ -129,6 +133,7 @@ Supervised program settings configured in [program:programName] section and incl
 - **exitcodes**. The list of “expected” exit codes for this program used with autorestart. If the autorestart parameter is set to unexpected, and the process exits in any other way than as a result of a supervisor stop request, supervisord will restart the process if it exits with an exit code that is not defined in this list.
 - **stopsignal**. Signal to send to command to gracefully stop it. If more than one stopsignal is configured, when stoping the program, the supervisor will send the signals to the program one by one with interval "stopwaitsecs". If the program does not exit after all the signals sent to the program, supervisord will kill the program.
 - **stopwaitsecs**. Amount of time to wait before sending SIGKILL to supervised command to make it stop ungracefully.
+- **stopretrysecs**. Amount of time to wait before trying again to stop gracefully.
 - **stdout_logfile**. Where STDOUT of supervised command should be redirected. (Particular values described lower in this file).
 - **stdout_logfile_maxbytes**. Log size after exceed which log will be rotated.
 - **stdout_logfile_backups**. Number of rotated log-files to preserve.
@@ -137,7 +142,7 @@ Supervised program settings configured in [program:programName] section and incl
 - **stderr_logfile_maxbytes**. Log size after exceed which log will be rotated.
 - **stderr_logfile_backups**. Number of rotated log-files to preserve.
 - **environment**. List of VARIABLE=value to be passed to supervised program. It has higher priority than `envFiles`.
-- **envFiles**. List of .env files to be loaded and passed to supervised program. 
+- **envFiles**. List of .env files to be loaded and passed to supervised program.
 - **priority**. The relative priority of the program in the start and shutdown ordering
 - **user**. Sudo to this USER or USER:GROUP right before exec supervised command.
 - **directory**. Jump to this path and exec supervised command there.
@@ -259,7 +264,7 @@ CMD ["/usr/local/bin/supervisord"]
 
 The Prometheus node exporter supported supervisord metrics are now integrated into the supervisor. So there is no need to deploy an extra node_exporter to collect the supervisord metrics. To collect the metrics, the port parameter in section "inet_http_server" must be configured and the metrics server is started on the path /metrics of the supervisor http server.
 
-For example, if the port parameter in "inet_http_server" is "127.0.0.1:9001" and then the metrics server should be accessed in url "http://127.0.0.1:9001/metrics" 
+For example, if the port parameter in "inet_http_server" is "127.0.0.1:9001" and then the metrics server should be accessed in url "http://127.0.0.1:9001/metrics"
 
 
 # Register service
@@ -276,4 +281,3 @@ supervisord service start
 # stop
 supervisord service stop
 ```
-
