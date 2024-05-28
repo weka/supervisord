@@ -180,7 +180,15 @@ func main() {
 		return command.Execute(args)
 	}
 
-	if _, err := parser.Parse(); err != nil {
+	var args []string
+	if filepath.Base(os.Args[0]) == "supervisorctl" {
+		// this is an alias for "supervisor ctl"
+		args = []string{"ctl"}
+		args = append(args, os.Args[1:]...)
+	} else {
+		args = os.Args[1:]
+	}
+	if _, err := parser.ParseArgs(args); err != nil {
 		flagsErr, ok := err.(*flags.Error)
 		if ok {
 			switch flagsErr.Type {
